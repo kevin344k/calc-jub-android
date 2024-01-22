@@ -1,0 +1,58 @@
+ 
+      <View style={styles.viewInputGroupUSD}>
+        
+        <TextInput
+          label="Bitcoin"
+          value={""}
+          onChange={(btc) => setAmountBTC(btc)}
+          style={styles.textInput}
+          inputMode="numeric"
+        />
+        <TextInput
+          defaultValue="BTC"
+          
+          textColor="white"
+          style={{ width: 70, fontSize: 20, backgroundColor: "#F7941D" }}
+        />
+      </View>
+      {/*for sats*/}
+      <View style={styles.viewInputGroupSats}>
+        <TextInput
+          defaultValue="$sats"
+          disabled
+          textColor="#495057"
+          style={{ width: 90, fontSize: 20, backgroundColor: "#ced4da" }}
+        />
+        <Text
+          style={styles.textInputSats}
+        > {calculateSats(btc)} </Text>
+      </View>
+      {/*for jubilacion*/}
+      <View style={styles.viewInputGroupJub}>
+        <TextInput
+          defaultValue="Jubilación estimada"
+          disabled
+          textColor="#495057"
+          style={{ width: 230, fontSize: 20, backgroundColor: "#ced4da" }}
+        />
+        <TextInput
+          label="Año"
+          value="sdsf"
+          style={styles.textInputJub}
+        />
+        
+      </View>
+    
+       {/*usd total jubilacion*/}
+       <View style={styles.viewInputGroupUSD}>
+
+        <Text> <Text style={{ fontWeight:"bold"}} >Nota: </Text> Bitcoin duplica su precio cada halvin o 4 años. A continuación podrás observar un valor estimado de tu inversión hasta el año de tu jubilación.</Text>
+       </View>
+       <View style={{ width:350,marginTop:18}}>
+        <TextInput
+          label="Año"
+          value=""
+                    style={{ width:350}}
+        />
+        
+      </View>
