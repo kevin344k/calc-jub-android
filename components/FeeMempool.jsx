@@ -9,7 +9,7 @@ const FeeMempool = ({ fees, price }) => {
       <Text style={styles.title}>Fee</Text>
       <View style={styles.cardBody}>
         <View style={styles.cardItem}>
-          <Text style={styles.subTitle}>Alta prioridad</Text>
+          <Text style={styles.subTitle}>Alta {"\n"}prioridad</Text>
           <View>
             <Text style={styles.numberSats}>
               {fees.fastestFee}
@@ -19,7 +19,7 @@ const FeeMempool = ({ fees, price }) => {
           </View>
         </View>
         <View style={styles.cardItem}>
-          <Text style={styles.subTitle}>Media prioridad</Text>
+          <Text style={styles.subTitle}>Media {"\n"}prioridad</Text>
           <View>
             <Text style={styles.numberSats}>
               {fees.halfHourFee}
@@ -30,7 +30,7 @@ const FeeMempool = ({ fees, price }) => {
         </View>
 
         <View style={styles.cardItem}>
-          <Text style={styles.subTitle}>Baja prioridad</Text>
+          <Text style={styles.subTitle}>Baja {"\n"}prioridad</Text>
           <View>
             <Text style={styles.numberSats}>
               {fees.economyFee}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
 
     width: "100%",
     marginTop: 12,
@@ -69,10 +69,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: "#ffc107",
     padding: 5,
+    paddingHorizontal:12,
     borderRadius: 6,
+    textAlign:"center",
   },
   cardItem: {
     alignItems: "center",
+   
+    
   },
   numberSats: {
     fontSize: 22,
@@ -80,12 +84,13 @@ const styles = StyleSheet.create({
     color: "white",
     paddingVertical:6,
    
+   
     
   },
   numberUS:{
     color:"#28a745",
     fontSize:15,
-   
+    textAlign:"center",
   },
 });
 

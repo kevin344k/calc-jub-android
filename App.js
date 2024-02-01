@@ -1,11 +1,15 @@
 import * as React from "react";
+import NetInfo from "@react-native-community/netinfo";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,RefreshControl,ScrollView,StatusBar
+  RefreshControl,
+  ScrollView,
+ 
 } from "react-native";
 import BtcSvg from "./components/btc-logo";
 import UsdSvg from "./components/Usd-logo";
@@ -13,10 +17,12 @@ import AngleRight from "./components/Angle-right";
 import FeeMempool from "./components/FeeMempool";
 import mempoolJS from "@mempool/mempool.js";
 import BlockMined from "./components/BlockMined";
-
-
-
+import ClockHalvin from "./components/ClockHalvin";
+import ModalConnect from "./components/ModalConnect";
+import ButFloatDonate from "./components/ButFloatDonate";
+import ModalDonate from "./components/ModalDonate";
 export default function App() {
+  const [connect, setConnect] = useState();
   const [refreshing, setRefreshing] = React.useState(false);
   const [priceBTC, setPriceBTC] = useState([]);
   const [usd, setUsd] = useState("");
@@ -24,13 +30,22 @@ export default function App() {
   const [load, setLoading] = useState(false);
   const [fee, setFee] = useState({});
   const [block, setBlockHeight] = useState([]);
+  const [blockHalvin, setBlockHalvin] = useState();
+  const [showModal, setShowModal] = useState(false);
 
+
+  NetInfo.fetch().then((state) => {
+    if (state.isConnected) {
+      setConnect(true);
+    } else {
+      setConnect(false);
+    }
+  });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    
     }, 2000);
   }, []);
 
@@ -53,7 +68,6 @@ export default function App() {
     getPriceBTC();
   }, [refreshing]);
 
-
   const feeMempool = async () => {
     try {
       const {
@@ -75,27 +89,25 @@ export default function App() {
     feeMempool();
   }, [refreshing]);
 
-
   const blockHeight = async () => {
-
     try {
-      
-      const { bitcoin: { blocks } } = mempoolJS({
-        hostname: 'mempool.space'
+      const {
+        bitcoin: { blocks },
+      } = mempoolJS({
+        hostname: "mempool.space",
       });
-    
-      const blocksTipHeight = await blocks.getBlocksTipHeight();
-    
-      setBlockHeight(blocksTipHeight)
 
+      const blocksTipHeight = await blocks.getBlocksTipHeight();
+
+      setBlockHeight(blocksTipHeight);
+      setBlockHalvin((840000 - blocksTipHeight) * 10 * 60);
     } catch (error) {
       console.error(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
-  
-            
   };
+
   useEffect(() => {
     blockHeight();
   }, [refreshing]);
@@ -103,99 +115,104 @@ export default function App() {
 
 
 
-
   return (
-  
+    <ScrollView
+      contentContainerStyle={styles.scrollView}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      <ModalConnect connect={connect} />
 
+      <View style={styles.container}>
+        <View style={styles.btcPriceContainer}>
+          <Text style={styles.subTitle}>Precio de Bitcoin</Text>
+          <View style={styles.containerBtcPrice}>
+            <View style={styles.containerBtcText}>
+              <BtcSvg />
 
-
-<ScrollView  contentContainerStyle={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-
-
-    <View style={styles.container}>
-     
-      <View style={styles.btcPriceContainer}>
-        <View style={styles.containerBtcPrice}>
-          <View style={styles.containerBtcText}>
-            <BtcSvg />
-
-            <Text style={{ color: "gray", fontSize: 20, marginLeft: 10 }}>
-              Bitcoin
+              <Text style={{ color: "gray", fontSize: 20, marginLeft: 10 }}>
+                Bitcoin
+              </Text>
+            </View>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
+              {" "}
+              $ {priceBTC}
             </Text>
           </View>
-          <Text style={{ color: "white", fontSize: 16 }}> $ {priceBTC}</Text>
         </View>
+
+        <ClockHalvin block={blockHalvin} />
+        <View style={styles.inputContainerAll}>
+          <Text style={styles.subTitle}>Calculadora(en USD)</Text>
+          <View style={styles.inputContainer}>
+            <View style={styles.groupIconContainer}>
+              <UsdSvg />
+              <AngleRight />
+              <BtcSvg />
+            </View>
+
+            <View style={styles.groupInput}>
+              <TextInput
+                style={styles.txtInput}
+                placeholder="USD"
+                inputMode="numeric"
+                onChangeText={(e) => {
+                  setUsd(e);
+                }}
+              />
+
+              <Text style={styles.txtInputResult} value="BTC">
+                {usd == "" ? "BTC" : `${(usd / priceBTC).toFixed(6)} BTC`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.groupIconContainer}>
+              <BtcSvg />
+
+              <AngleRight />
+              <UsdSvg />
+            </View>
+
+            <View style={styles.groupInput}>
+              <TextInput
+                style={styles.txtInput}
+                placeholder="BTC"
+                inputMode="numeric"
+                onChangeText={(e) => {
+                  setBtc(e);
+                }}
+              />
+
+              <Text style={styles.txtInputResult}>
+                {btc == "" ? "USD" : "$ " + (btc * priceBTC).toFixed(1)}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <FeeMempool fees={fee} price={priceBTC} />
+        <BlockMined block={block} />
+        <ButFloatDonate setShowModal={setShowModal} />
+        <ModalDonate  visible={showModal} setShowModal={setShowModal}/>
+
+
       </View>
 
-      <View style={styles.inputContainer}>
-        <View style={styles.groupIconContainer}>
-          <UsdSvg />
-          <AngleRight />
-          <BtcSvg />
-        </View>
-
-        <View style={styles.groupInput}>
-          <TextInput
-            style={styles.txtInput}
-            placeholder="USD"
-            inputMode="numeric"
-            onChangeText={(e) => {
-              setUsd(e);
-            }}
-          />
-
-          <Text style={styles.txtInputResult} value="BTC">
-            {usd == "" ? "BTC" : (usd / priceBTC).toFixed(6)}
-          </Text>
-        </View>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <View style={styles.groupIconContainer}>
-          <BtcSvg />
-
-          <AngleRight />
-          <UsdSvg />
-        </View>
-
-        <View style={styles.groupInput}>
-          <TextInput
-            style={styles.txtInput}
-            placeholder="BTC"
-            inputMode="numeric"
-            onChangeText={(e) => {
-              setBtc(e);
-            }}
-          />
-
-          <Text style={styles.txtInputResult}>
-            {btc == "" ? "USD" : "$ " + (btc * priceBTC).toFixed(1)}
-          </Text>
-        </View>
-      </View>
-      <FeeMempool fees={fee} price={priceBTC} />
-      <BlockMined block={block}/>
-    </View>
-    <StatusBar/>
-</ScrollView>
-
-
-
-
+      <StatusBar style="default" />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
     paddingTop: 30,
- 
   },
   title: {
     fontSize: 25,
@@ -203,17 +220,23 @@ const styles = StyleSheet.create({
   },
   btcPriceContainer: {
     width: "100%",
-    marginBottom: 15,
+    marginBottom: 4,
+    backgroundColor: "#212529",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+
+    borderRadius: 6,
+  },
+  subTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: 8,
   },
   containerBtcPrice: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-
-    borderRadius: 6,
-    backgroundColor: "#212529",
   },
   containerBtcText: {
     flex: 1,
@@ -242,11 +265,16 @@ const styles = StyleSheet.create({
     height: "100%",
     fontSize: 16,
   },
+  inputContainerAll: {
+    width: "100%",
+    marginTop: 12,
+    borderRadius: 6,
+    backgroundColor: "#212529",
+    padding: 10,
+    paddingBottom: 25,
+  },
   inputContainer: {
     width: "100%",
-    marginTop: 10,
-    justifyContent: "center",
-    
   },
   groupIconContainer: {
     flex: 0,
@@ -262,9 +290,9 @@ const styles = StyleSheet.create({
   groupInput: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
 
     width: "100%",
     gap: 3,
+    overflow: "hidden",
   },
 });
