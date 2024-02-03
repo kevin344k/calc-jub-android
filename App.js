@@ -52,12 +52,13 @@ export default function App() {
   const getPriceBTC = async () => {
     try {
       const response = await fetch(
-        "https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT"
+        "https://mempool.space/api/v1/prices"
       );
 
       const json = await response.json();
-      const dataSimple = Number(json.price);
-      setPriceBTC(dataSimple.toFixed(3));
+      const dataSimple = Number(json.USD);
+      console.log(dataSimple);
+      setPriceBTC(dataSimple.toFixed(2));
     } catch (error) {
       console.error(error);
     } finally {
