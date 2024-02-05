@@ -30,7 +30,7 @@ export default function App() {
   const [load, setLoading] = useState(false);
   const [fee, setFee] = useState({});
   const [block, setBlockHeight] = useState([]);
-  const [blockHalvin, setBlockHalvin] = useState();
+  const [blockHalvin, setBlockHalvin] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
 
