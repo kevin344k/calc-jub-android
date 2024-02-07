@@ -7,26 +7,26 @@ import {
   Image,
   Modal,
   Pressable,
-  TouchableOpacity,
-  Alert,
+  TouchableOpacity,Alert
 } from "react-native";
 
 export default function ModalDonate({ setShowModal, visible }) {
-  console.log(visible, "sasas");
+
   function hanldlerPressModal(show) {
     setShowModal(show);
   }
 
   const copyToClipboard = async (text) => {
     await Clipboard.setStringAsync(text);
+    Alert.alert("Direccion copiada correctamente")
   };
 
 
 
 
   return (
-    <View>
-      <Modal animationType="slide" transparent={true} visible={visible}>
+    <View style={{backgroundColor:"red"}}>
+      <Modal animationType="fade" transparent={true} visible={visible} overFullScreen>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
@@ -46,7 +46,7 @@ export default function ModalDonate({ setShowModal, visible }) {
                 >
                   <Text style={styles.dirWalletText}>
                     <Text style={{fontWeight:"bold"}}>Dirección:</Text>
-                  0x92D0459CF70497F0a806fa16cf4dA82069d7B9aB {"\n"}(click aquí para copiar)
+                  0x92D0459CF70497F0a806fa16cf4dA82069d7B9aB {"\n"}(Toca para copiar)
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -63,7 +63,7 @@ export default function ModalDonate({ setShowModal, visible }) {
                 >
                   <Text style={styles.dirWalletText}>
                   <Text style={{fontWeight:"bold"}}>Dirección:</Text>
-                  bc1ql6dxlzey3fj7ddsky43pyg36ypyghl8sade68n {"\n"}  (Click aquí para copiar)
+                  bc1ql6dxlzey3fj7ddsky43pyg36ypyghl8sade68n {"\n"}  (Toca para copiar)
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -88,10 +88,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+
+    backgroundColor:"rgba(0, 0, 0, 0.7)",
+   
   },
   modalView: {
-    margin: 30,
+    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 15,
@@ -145,8 +147,8 @@ const styles = StyleSheet.create({
     
   },
   imageQr:{
-    width:180,
-    height:150,
+    width:200,
+    height:170,
     
   }
 });

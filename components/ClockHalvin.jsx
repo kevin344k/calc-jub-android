@@ -4,12 +4,12 @@ import CountDown from "react-native-countdown-component";
 
 const ClockHalvin =  (block) => {
 
-console.log(block,"block");
-if (block.block!="" && block.block!=undefined) {
-  
 
+if (block.block!=[] && block.block!=undefined && block.block!=0) {
+  
+console.log(block.block);
 const result=block.block
-console.log(result,"halvin");
+
   return (
 
     <View style={styles.cardBlock}>
@@ -26,6 +26,9 @@ console.log(result,"halvin");
     </View>
   );
   };
+
+
+
 }
 
 

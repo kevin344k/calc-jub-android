@@ -3,7 +3,7 @@ import { View, Text, StyleSheet,Image,Modal,Pressable,BackHandler } from "react-
 
 
 const ModalConnect=(connect)=>{
-    console.log(connect.connect);
+
 
     const modalVisible=connect.connect
 

@@ -57,7 +57,7 @@ export default function App() {
 
       const json = await response.json();
       const dataSimple = Number(json.USD);
-      console.log(dataSimple);
+      
       setPriceBTC(dataSimple.toFixed(2));
     } catch (error) {
       console.error(error);
@@ -202,7 +202,7 @@ export default function App() {
 
       </View>
 
-      <StatusBar style="default" />
+      <StatusBar backgroundColor="#212529" barStyle="#ffff"/>
     </ScrollView>
   );
 }
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    paddingTop: 30,
+    marginTop: 30,
   },
   title: {
     fontSize: 25,
