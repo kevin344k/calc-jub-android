@@ -101,7 +101,7 @@ export default function App() {
       const blocksTipHeight = await blocks.getBlocksTipHeight();
 
       setBlockHeight(blocksTipHeight);
-      setBlockHalvin((840000 - blocksTipHeight) * 10 * 60);
+      setBlockHalvin((1050000 - blocksTipHeight) * 10 * 60);
     } catch (error) {
       console.error(error);
     } finally {
@@ -144,8 +144,10 @@ export default function App() {
         </View>
 
         <ClockHalvin block={blockHalvin} />
+        
         <View style={styles.inputContainerAll}>
           <Text style={styles.subTitle}>Calculadora(en USD)</Text>
+
           <View style={styles.inputContainer}>
             <View style={styles.groupIconContainer}>
               <UsdSvg />
@@ -167,7 +169,31 @@ export default function App() {
                 {usd == "" ? "BTC" : `${(usd / priceBTC).toFixed(6)} BTC`}
               </Text>
             </View>
+            {/*sats */}
+            <View style={styles.viewSatsContainer}>
+              <Text style={styles.txtSats} >
+              {usd == "" ? "Sats" : `${(((usd / priceBTC).toFixed(6))*100000000).toFixed()} Sats`}
+              </Text>
+            </View>
+            {/*end sats */}
           </View>
+          <View style={styles.divider}>
+
+          </View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           <View style={styles.inputContainer}>
             <View style={styles.groupIconContainer}>
@@ -191,6 +217,13 @@ export default function App() {
                 {btc == "" ? "USD" : "$ " + (btc * priceBTC).toFixed(1)}
               </Text>
             </View>
+               {/*sats */}
+               <View style={styles.viewSatsContainer}>
+              <Text style={styles.txtSats} >
+              {usd == "" ? "Sats" : `${((Number(btc))*100000000).toFixed()} Sats`}
+              </Text>
+            </View>
+            {/*end sats */}
           </View>
         </View>
 
@@ -296,4 +329,25 @@ const styles = StyleSheet.create({
     gap: 3,
     overflow: "hidden",
   },
+  viewSatsContainer:{
+    alignItems:"center",
+  
+    width: "100%",
+    backgroundColor: "white",
+    borderRadius: 6,
+    marginVertical: 4,
+    
+  },
+  txtSats:{
+    fontSize:16,
+    paddingVertical:10,
+  },
+  divider:{
+    borderBottomColor:"#FAB913",
+    borderBottomWidth:2,
+    width:"100%",
+    marginVertical:8,
+
+  },
+
 });

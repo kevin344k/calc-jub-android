@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import CountDown from "react-native-countdown-component";
+import {CountDown} from "react-native-countdown-component";
 
 const ClockHalvin =  (block) => {
 
@@ -13,14 +13,15 @@ const result=block.block
   return (
 
     <View style={styles.cardBlock}>
-      <Text style={styles.title}>Reloj Halvin</Text>
-      <CountDown
+      <Text style={styles.title}>Reloj Halvin </Text>
+      <Text style={styles.subTitle}>(3.125 btc {"-->"} 1.5625 btc)</Text>
+     <CountDown
           until={result}
           onFinish={() => alert("El Halvin ha ocurrido")}
           size={30}
           timeLabels={{ d: "Días", h: "Horas", m: "Minutos", s: "Segundos" }}
           timeLabelStyle={{color:"white"}}
-          digitTxtStyle={{fontSize:40,color:"#212529"}}
+          digitTxtStyle={{fontSize:27,color:"#212529"}}
   
         />
     </View>
@@ -57,8 +58,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-    marginBottom:8,
+    marginBottom:1,
   },
+  subTitle:{
+    fontSize: 18,
+    fontStyle: "italic",
+    fontWeight:"bold",
+    color: "gray",
+    marginBottom:8,
+  }
 });
 
 export default ClockHalvin;
