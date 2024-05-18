@@ -9,7 +9,6 @@ import {
   TextInput,
   RefreshControl,
   ScrollView,
- 
 } from "react-native";
 import BtcSvg from "./components/btc-logo";
 import UsdSvg from "./components/Usd-logo";
@@ -21,6 +20,7 @@ import ClockHalvin from "./components/ClockHalvin";
 import ModalConnect from "./components/ModalConnect";
 import ButFloatDonate from "./components/ButFloatDonate";
 import ModalDonate from "./components/ModalDonate";
+import WhenJub from "./components/WhenJub";
 export default function App() {
   const [connect, setConnect] = useState();
   const [refreshing, setRefreshing] = React.useState(false);
@@ -32,6 +32,7 @@ export default function App() {
   const [block, setBlockHeight] = useState([]);
   const [blockHalvin, setBlockHalvin] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
 
 
   NetInfo.fetch().then((state) => {
@@ -51,13 +52,11 @@ export default function App() {
 
   const getPriceBTC = async () => {
     try {
-      const response = await fetch(
-        "https://mempool.space/api/v1/prices"
-      );
+      const response = await fetch("https://mempool.space/api/v1/prices");
 
       const json = await response.json();
       const dataSimple = Number(json.USD);
-      
+
       setPriceBTC(dataSimple.toFixed(2));
     } catch (error) {
       console.error(error);
@@ -113,9 +112,6 @@ export default function App() {
     blockHeight();
   }, [refreshing]);
 
-
-
-
   return (
     <ScrollView
       contentContainerStyle={styles.scrollView}
@@ -144,7 +140,7 @@ export default function App() {
         </View>
 
         <ClockHalvin block={blockHalvin} />
-        
+
         <View style={styles.inputContainerAll}>
           <Text style={styles.subTitle}>Calculadora(en USD)</Text>
 
@@ -171,29 +167,17 @@ export default function App() {
             </View>
             {/*sats */}
             <View style={styles.viewSatsContainer}>
-              <Text style={styles.txtSats} >
-              {usd == "" ? "Sats" : `${(((usd / priceBTC).toFixed(6))*100000000).toFixed()} Sats`}
+              <Text style={styles.txtSats}>
+                {usd == ""
+                  ? "Sats"
+                  : `${new Intl.NumberFormat('es-MX').format((
+                      (usd / priceBTC).toFixed(6) * 100000000
+                    ).toFixed())} Sats`}
               </Text>
             </View>
             {/*end sats */}
           </View>
-          <View style={styles.divider}>
-
-          </View>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <View style={styles.divider}></View>
 
           <View style={styles.inputContainer}>
             <View style={styles.groupIconContainer}>
@@ -217,25 +201,31 @@ export default function App() {
                 {btc == "" ? "USD" : "$ " + (btc * priceBTC).toFixed(1)}
               </Text>
             </View>
-               {/*sats */}
-               <View style={styles.viewSatsContainer}>
-              <Text style={styles.txtSats} >
-              {usd == "" ? "Sats" : `${((Number(btc))*100000000).toFixed()} Sats`}
+            {/*sats */}
+            <View style={styles.viewSatsContainer}>
+              <Text style={styles.txtSats}>
+                {btc == ""
+                  ? "Sats"
+                  : 
+                  `${new Intl.NumberFormat('es-MX').format(((Number(btc) * 100000000).toFixed()))} Sats`
+                  
+
+                    }
               </Text>
             </View>
             {/*end sats */}
           </View>
         </View>
-
+                    <WhenJub></WhenJub>
         <FeeMempool fees={fee} price={priceBTC} />
         <BlockMined block={block} />
         <ButFloatDonate setShowModal={setShowModal} />
-        <ModalDonate  visible={showModal} setShowModal={setShowModal}/>
+        <ModalDonate visible={showModal} setShowModal={setShowModal} />
 
-
+        <Text style={{marginTop:20}}>kevin.nakamoto.btc@gmail.com</Text>
       </View>
 
-      <StatusBar backgroundColor="#212529" barStyle="#ffff"/>
+      <StatusBar backgroundColor="#212529" barStyle="#ffff" />
     </ScrollView>
   );
 }
@@ -245,7 +235,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    padding: 10,
     marginTop: 30,
   },
   title: {
@@ -329,25 +319,22 @@ const styles = StyleSheet.create({
     gap: 3,
     overflow: "hidden",
   },
-  viewSatsContainer:{
-    alignItems:"center",
-  
+  viewSatsContainer: {
+    alignItems: "center",
+
     width: "100%",
     backgroundColor: "white",
     borderRadius: 6,
     marginVertical: 4,
-    
   },
-  txtSats:{
-    fontSize:16,
-    paddingVertical:10,
+  txtSats: {
+    fontSize: 16,
+    paddingVertical: 10,
   },
-  divider:{
-    borderBottomColor:"#FAB913",
-    borderBottomWidth:2,
-    width:"100%",
-    marginVertical:8,
-
+  divider: {
+    borderBottomColor: "#FAB913",
+    borderBottomWidth: 2,
+    width: "100%",
+    marginVertical: 8,
   },
-
 });
