@@ -9,6 +9,7 @@ import {
   TextInput,
   RefreshControl,
   ScrollView,
+  Image
 } from "react-native";
 import BtcSvg from "./components/btc-logo";
 import UsdSvg from "./components/Usd-logo";
@@ -21,7 +22,10 @@ import ModalConnect from "./components/ModalConnect";
 import ButFloatDonate from "./components/ButFloatDonate";
 import ModalDonate from "./components/ModalDonate";
 import WhenJub from "./components/WhenJub";
-export default function App() {
+import Links from "./components/Links";
+
+export default function 
+App() {
   const [connect, setConnect] = useState();
   const [refreshing, setRefreshing] = React.useState(false);
   const [priceBTC, setPriceBTC] = useState([]);
@@ -139,7 +143,7 @@ export default function App() {
           </View>
         </View>
 
-        <ClockHalvin block={blockHalvin} />
+        <ClockHalvin block={blockHalvin} price={priceBTC} />
 
         <View style={styles.inputContainerAll}>
           <Text style={styles.subTitle}>Calculadora(en USD)</Text>
@@ -209,7 +213,6 @@ export default function App() {
                   : 
                   `${new Intl.NumberFormat('es-MX').format(((Number(btc) * 100000000).toFixed()))} Sats`
                   
-
                     }
               </Text>
             </View>
@@ -219,6 +222,7 @@ export default function App() {
                     <WhenJub></WhenJub>
         <FeeMempool fees={fee} price={priceBTC} />
         <BlockMined block={block} />
+        <Links></Links>
         <ButFloatDonate setShowModal={setShowModal} />
         <ModalDonate visible={showModal} setShowModal={setShowModal} />
 

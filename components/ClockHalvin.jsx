@@ -1,37 +1,33 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import {CountDown} from "react-native-countdown-component";
+import { CountDown } from "react-native-countdown-component";
 
-const ClockHalvin =  (block) => {
-
-
-if (block.block!=[] && block.block!=undefined && block.block!=0) {
-  
-console.log(block.block);
-const result=block.block
-
-  return (
-
-    <View style={styles.cardBlock}>
-      <Text style={styles.title}>Reloj Halvin </Text>
-      <Text style={styles.subTitle}>(3.125 btc {"-->"} 1.5625 btc)</Text>
-     <CountDown
+const ClockHalvin = (block) => {
+  if (block.block != [] && block.block != undefined && block.block != 0) {
+    console.log(block.block);
+    const result = block.block;
+    const price=block.price
+    return (
+      <View style={styles.cardBlock}>
+        <Text style={styles.title}>Reloj Halvin </Text>
+        <View style={styles.containerRewardText}>
+          <Text style={styles.subTitle}>Recompensa{"\n"}actual por bloque</Text>
+          <Text style={styles.textReward}>
+            3.125 btc {"\n"}({"≈"} {"$"}{new Intl.NumberFormat('es-MX').format((price*3.125).toFixed(2)) })
+          </Text>
+        </View>
+        <CountDown
           until={result}
           onFinish={() => alert("El Halvin ha ocurrido")}
           size={30}
           timeLabels={{ d: "Días", h: "Horas", m: "Minutos", s: "Segundos" }}
-          timeLabelStyle={{color:"white"}}
-          digitTxtStyle={{fontSize:27,color:"#212529"}}
-  
+          timeLabelStyle={{ color: "white" }}
+          digitTxtStyle={{ fontSize: 27, color: "#212529" }}
         />
-    </View>
-  );
-  };
-
-
-
-}
-
+      </View>
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   cardBlock: {
@@ -58,15 +54,30 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-    marginBottom:1,
+    marginBottom: 1,
   },
-  subTitle:{
-    fontSize: 18,
+  subTitle: {
+    fontSize: 16,
     fontStyle: "italic",
-    fontWeight:"bold",
+    fontWeight: "bold",
     color: "gray",
-    marginBottom:8,
-  }
+    marginBottom: 8,
+    paddingRight: 8,
+  },
+  containerRewardText: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginBottom: 10,
+  },
+  textReward: {
+    fontSize: 16,
+    paddingLeft: 8,
+
+    justifyContent: "center",
+    borderLeftWidth: 2,
+    borderLeftColor: "white",
+    color: "white",
+  },
 });
 
 export default ClockHalvin;
