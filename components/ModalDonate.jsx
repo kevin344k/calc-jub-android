@@ -10,6 +10,8 @@ import {
   TouchableOpacity,Alert
 } from "react-native";
 
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 export default function ModalDonate({ setShowModal, visible }) {
 
   function hanldlerPressModal(show) {
@@ -20,8 +22,6 @@ export default function ModalDonate({ setShowModal, visible }) {
     await Clipboard.setStringAsync(text);
     Alert.alert("Direccion copiada correctamente")
   };
-
-
 
 
   return (
@@ -45,15 +45,15 @@ export default function ModalDonate({ setShowModal, visible }) {
                   }}
                 >
                   <Text style={styles.dirWalletText}>
-                    <Text style={{fontWeight:"bold"}}>Dirección:</Text>
-                  0x92D0459CF70497F0a806fa16cf4dA82069d7B9aB {"\n"}(Toca para copiar)
+                    <Text style={{fontWeight:"bold"}}>Dirección: </Text>
+                  0x92D0459CF70497F0a806fa16cf4dA82069d7B9aB  <Ionicons name="copy-outline" size={18} color="grey" />
                   </Text>
                 </TouchableOpacity>
               </View>
            
               <View style={styles.sectionWallet}>
                    <Text style={{fontWeight:"bold"}}>Bitcoin</Text>
-              <Image style={styles.imageQr} source={require("../assets/src/svg/btcQr.png")} />
+              <Image style={styles.imageQr} source={require("../assets/src/svg/btcQr.png")}/>
                 <TouchableOpacity
                   onPress={() => {
                     copyToClipboard(
@@ -62,8 +62,8 @@ export default function ModalDonate({ setShowModal, visible }) {
                   }}
                 >
                   <Text style={styles.dirWalletText}>
-                  <Text style={{fontWeight:"bold"}}>Dirección:</Text>
-                  bc1ql6dxlzey3fj7ddsky43pyg36ypyghl8sade68n {"\n"}  (Toca para copiar)
+                  <Text style={{fontWeight:"bold"}}>Dirección: </Text>
+                  bc1ql6dxlzey3fj7ddsky43pyg36ypyghl8sade68n  <Ionicons name="copy-outline" size={18} color="grey" />
                   </Text>
                 </TouchableOpacity>
               </View>

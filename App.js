@@ -2,6 +2,7 @@ import * as React from "react";
 import NetInfo from "@react-native-community/netinfo";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
+import * as Clipboard from "expo-clipboard";
 import {
   View,
   StyleSheet,
@@ -9,8 +10,11 @@ import {
   TextInput,
   RefreshControl,
   ScrollView,
-  Image
+  TouchableOpacity,
+  Image,
+  Alert
 } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import BtcSvg from "./components/btc-logo";
 import UsdSvg from "./components/Usd-logo";
 import AngleRight from "./components/Angle-right";
@@ -23,6 +27,7 @@ import ButFloatDonate from "./components/ButFloatDonate";
 import ModalDonate from "./components/ModalDonate";
 import WhenJub from "./components/WhenJub";
 import Links from "./components/Links";
+
 
 export default function 
 App() {
@@ -115,6 +120,12 @@ App() {
   useEffect(() => {
     blockHeight();
   }, [refreshing]);
+
+{/*copyToClipBoard*/}
+const copyToClipboard = async (text) => {
+  await Clipboard.setStringAsync(text);
+  Alert.alert("Copiado")
+};
 
   return (
     <ScrollView
@@ -219,14 +230,43 @@ App() {
             {/*end sats */}
           </View>
         </View>
-                    <WhenJub></WhenJub>
+                    <WhenJub price={priceBTC}></WhenJub>
         <FeeMempool fees={fee} price={priceBTC} />
         <BlockMined block={block} />
         <Links></Links>
-        <ButFloatDonate setShowModal={setShowModal} />
-        <ModalDonate visible={showModal} setShowModal={setShowModal} />
+   
+      
+        <TouchableOpacity 
+                  onPress={() => {
+                    copyToClipboard(
+                      "470939603"
+                    );
+                  }}
+                >
+                  <View style={styles.dirWalletText}>
+                    <Text style={{fontWeight:"bold"}}>Binance ID:</Text>
+                  <Text> 470 939 603 </Text>
+                  
+                  <Ionicons name="copy-outline" size={18} color="grey" />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={() => {
+                    copyToClipboard(
+                      "kevin.nakamoto.btc@gmail.com"
+                    );
+                  }}
+                >
+                  <View style={styles.dirWalletText}>
+                    <Text style={{fontWeight:"bold"}}>Contacto: </Text>
+                  <Text> kevin.nakamoto.btc@gmail.com </Text>
+                  
+                  <Ionicons name="copy-outline" size={18} color="grey" />
+                  </View>
+                </TouchableOpacity>
+                <ButFloatDonate setShowModal={setShowModal} />
+                <ModalDonate visible={showModal} setShowModal={setShowModal} />
 
-        <Text style={{marginTop:20}}>kevin.nakamoto.btc@gmail.com</Text>
       </View>
 
       <StatusBar backgroundColor="#212529" barStyle="#ffff" />
@@ -341,4 +381,8 @@ const styles = StyleSheet.create({
     width: "100%",
     marginVertical: 8,
   },
+  dirWalletText:{
+    flexDirection:"row",
+    marginTop:8,
+  }
 });
