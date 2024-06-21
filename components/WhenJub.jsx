@@ -10,56 +10,83 @@ import {
   TouchableOpacity,
   Alert,
   TextInput,
+  FlatList,
 } from "react-native";
+import { DataTable } from 'react-native-paper'; 
 
-const WhenJub = (data) => {
+const WhenJub = (dataP) => {
   const [btc, setBtc] = useState();
   let numberHalvin = "";
   let anioRewards = "";
   let amountReward = "";
-
+  let datosArr=[]
   const halvin_actual = 5;
+  const anioHalvilNow=2024
   const rewardNow = 3.125;
-  let priceBtc=data.price
 
-  console.log(data);
+
+
   if (btc !== "" && btc !== undefined && btc !== 0) {
     let findReward = data.find((e) => e.Rewards <= btc);
 
     if (findReward !== undefined) {
       console.log(findReward);
-      //return (`${findReward.Year} (${(findReward.Rewards)})`)
+
 
       amountReward = findReward.Rewards;
       anioRewards = findReward.Year;
       numberHalvin = findReward.Nro;
+
+     
+
+      function calculateRewads(priceBtc,halvin_actual,halvinJub) {
+      
+        let price=priceBtc.price
+
+        const amountHalvins=Math.abs(halvinJub-halvin_actual)
+
+       let priceFuture=price*rewardNow
+       let yearNow=anioHalvilNow
+    
+
+        for (let i = 1; i <= amountHalvins; i++) {
+          
+          priceFuture=priceFuture*2
+          yearNow=yearNow+4
+
+          let obj={
+            "$":priceFuture,
+            "Y":yearNow,
+           "num":i
+          }
+
+
+          datosArr.push(obj)
+
+          
+         console.log(priceFuture,yearNow,i);
+
+          
+          
+        }
+
+        console.log(datosArr);
+
+        console.log(priceBtc,amountHalvins);
+
+
+
+      }
+      calculateRewads(dataP,halvin_actual,numberHalvin)
+
     }
-    console.log(numberHalvin);
+    console.log("numero de halvin :",numberHalvin);
   }
 
-  console.log(btc);
+  console.log("CANTIDAD BTC: ",btc);
 
 
-function calculateRewads(priceBtc,halvin_actual) {
-  const priceFuture=priceBtc
-  console.log(priceFuture*halvin_actual);
-}
-
-calculateRewads(priceBtc,halvin_actual)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 
@@ -89,7 +116,7 @@ calculateRewads(priceBtc,halvin_actual)
           <Text style={styles.subTitle}>Recomp. del año</Text>
 
           <Text style={styles.txtInputRewards} placeholder="Año">
-            {/* btc!=="" && btc!==0 ? funcFinf():"" */}
+           
             {btc !== "" && btc !== 0 && btc !== undefined
               ? `${anioRewards} (${amountReward})`
               : ""}
@@ -97,9 +124,27 @@ calculateRewads(priceBtc,halvin_actual)
         </View>
       </View>
       <View style={styles.containerTable}>
-        <Text>
-          Ṕasarán un total de {Math.abs(numberHalvin - halvin_actual)}
+ <Text style={{color:"white", marginVertical:8,textAlign:"center"}}>Halvins vs Precio de recompensa</Text>
+        <View>
+          <DataTable style={{backgroundColor:"white"}}>
+           
+            <DataTable.Header>
+              <DataTable.Title >#</DataTable.Title>
+              <DataTable.Title>Año</DataTable.Title>
+              <DataTable.Title>Precio</DataTable.Title>
+            </DataTable.Header>
+           { datosArr.map((item)=>(<DataTable.Row key={item.num} >
+              <DataTable.Cell>{item.num}</DataTable.Cell>
+              <DataTable.Cell>{item.Y}</DataTable.Cell>
+
+              <DataTable.Cell>$ {new Intl.NumberFormat('es-MX').format(item.$)}</DataTable.Cell>
+            </DataTable.Row>))}
+          </DataTable>
+          <Text style={{color:"white", marginTop:8,}}>
+            
+          Un BTC costará $ {datosArr.length>0?new Intl.NumberFormat('es-MX').format(((datosArr[datosArr.length-1].$)/btc).toFixed(2)):""} en el {datosArr.length>0?(datosArr[datosArr.length-1].Y):""}
         </Text>
+        </View>
       </View>
     </View>
   );
@@ -170,6 +215,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     fontSize: 17,
   },
+  containerTable:{
+    marginTop:8,
+  }
 });
 
 export default WhenJub;
